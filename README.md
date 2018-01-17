@@ -19,4 +19,6 @@
 
 [配置详细说明](http://blog.csdn.net/isea533/article/details/42102297)
 
+[配置介绍](http://blog.csdn.net/isea533/article/details/42102297)
+
 
