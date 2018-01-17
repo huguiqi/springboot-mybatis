@@ -1,6 +1,12 @@
 package com.example.demo;
 
-import com.example.demo.repository.PersonDataRepository;
+import com.example.demo.bean.Person;
+import com.example.demo.repository.CarDataRepository;
+import com.example.demo.repository.PersonRepository;
+import com.github.pagehelper.PageRowBounds;
+import org.apache.ibatis.session.RowBounds;
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +24,24 @@ import java.util.List;
 public class Demo1ApplicationTests {
 
 	@Autowired
-	private PersonDataRepository personDataRepository;
+	private CarDataRepository carDataRepository;
+
 
 	@Test
+	@Ignore
 	public void testAdd() {
 		//应用插入的数据被回滚
-		personDataRepository.addCarAndHouse(true);
+		carDataRepository.addCarAndHouse(true);
 
 	}
 
 	@Test
+	@Ignore
 	public void testQuery(){
 
 		System.out.println("=======查询所有的");
-		Object carObj = personDataRepository.queryFor().get("car");
-		Object houseObj = personDataRepository.queryFor().get("house");
+		Object carObj = carDataRepository.queryFor().get("car");
+		Object houseObj = carDataRepository.queryFor().get("house");
 
 		List carList =  Arrays.asList(carObj);
 		List houseList =  Arrays.asList(houseObj);

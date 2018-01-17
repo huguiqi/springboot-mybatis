@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.bean.Car;
 import com.example.demo.bean.House;
+import com.example.demo.bean.Person;
 import com.example.demo.mapper.CarMapper;
 import com.example.demo.mapper.HouseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.*;
  */
 
 @Repository
-public class PersonDataRepository {
+public class CarDataRepository {
 
     @Autowired
     private CarMapper carMapper;
@@ -41,4 +42,5 @@ public class PersonDataRepository {
         map.put("house",list2);
         return map;
     }
+
 }
