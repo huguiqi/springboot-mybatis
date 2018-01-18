@@ -9,6 +9,8 @@
 
     <context id="OracleTables" targetRuntime="MyBatis3Simple" defaultModelType="flat">
 
+        <plugin type="com.example.demo.common.plugin.WFModelPlugin"/>
+
         <commentGenerator type="com.example.demo.common.MyCommentGenerator">
             <!--是否取消注释-->
             <property name="suppressAllComments" value="true"/>
@@ -22,7 +24,7 @@
             <property name="remarksReporting" value="true"></property>
         </jdbcConnection>
 
-        <javaTypeResolver >
+        <javaTypeResolver type="com.example.demo.common.JavaTypeResolverForOracleImpl">
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
 

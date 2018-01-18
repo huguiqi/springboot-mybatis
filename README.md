@@ -365,3 +365,61 @@ MyCommentGenerator:
 
 **`commentGenerator` 标签一定要按顺序放置，元素类型为 "context" 的内容必须匹配 `(property*,plugin*,commentGenerator?,(connectionFactory|jdbcConnection),javaTypeResolver?,javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table+)`，也就是说，在前面没有property和plugin标签时，commentGenerator标签要放在首位。**
 
+
+
+## oracle数据库遇到的问题
+
+* 生成的Number类型生成在java类中都是Short类型
+
+默认情况下的转换规则为：
+
+如果精度>0或者长度>18，就会使用java.math.BigDecimal
+如果精度=0并且10<=长度<=18，就会使用java.lang.Long
+如果精度=0并且5<=长度<=9，就会使用java.lang.Integer
+如果精度=0并且长度<5，就会使用java.lang.Short
+如果设置为true，那么一定会使用java.math.BigDecimal，配置示例如下：
+
+    <javaTypeResolver >
+        <property name="forceBigDecimals" value="true" />
+    </javaTypeResolver>
+
+
+由于公司的oracle数据库建表语句中没有设置NUMBER的长度，或者是这样设置：
+    
+    INTEGER(8),int(8),LONG(10)
+
+但是这样的语法放到oracle执行，会自动转为NUMBER类型，并且没有长度设置。这也就导致插件生成的model对象生成的是Short而不是Integer或者Long类型。
+
+
+**解决办法：**
+
+    CREATE TABLE "T_USER" (
+    "ID" NUMBER(9,0) NOT NULL ,
+    "NAME" VARCHAR2(255) NULL ,
+    "NICK_NAME" VARCHAR2(255) NULL ,
+    "PASSWORD" VARCHAR2(255) NULL ,
+    "AGE" NUMBER(5,0) NULL ,
+    "STATUS" CHAR(1) NULL ,
+    PRIMARY KEY ("ID")
+    )
+
+
+这样再运行插件，就会生成对应的类型了。
+
+* 生成的model对象不想要getter/setter方法，想要通过`lombok`注解自动生成。
+
+**解决办法：**
+看WFModelPlugin.java插件
+
+* 生成的mapper.xml里的凡是number类型的，jdbcType都是`DECIMAL`类型，需要将`DECIMAL`类型全部变成`INTEGER`
+
+**解决办法：**
+
+JavaTypeResolverForOracleImpl.java
+
+## 如何写mybatis Generator的插件
+
+插件可用于修改或添加到由MyBatis Generator 生成的对象。插件必须实现org.mybatis.generator.api.Plugin接口 。插件接​​口包含许多在代码生成过程的不同阶段被调用的方法。任何特定的插件通常不需要实现整个接口。因此，大多数插件应扩展适配器类org.mybatis.generator.api.PluginAdapter 。适配器类提供基本的插件支持，并为大多数的接口方法（类似于Swing适配器类）提供了空操作的方法。
+
+[参考如何写mybatis插件](http://mbg.cndocs.ml/reference/pluggingIn.html)
+
