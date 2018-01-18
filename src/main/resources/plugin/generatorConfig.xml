@@ -8,12 +8,19 @@
             location="C:\Users\guiqi\.m2\repository\com\oracle\ojdbc6\11.2.0.3\ojdbc6-11.2.0.3.jar"/>
 
     <context id="OracleTables" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+
+        <commentGenerator type="com.example.demo.common.MyCommentGenerator">
+            <!--是否取消注释-->
+            <property name="suppressAllComments" value="true"/>
+            <!-- 是否生成注释代时间戳 -->
+            <property name="suppressDate" value="false"/>
+        </commentGenerator>
+
         <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
                         connectionURL="jdbc:oracle:thin:@//10.7.10.220:1521/slb" userId="activity"
                         password="activity">
             <property name="remarksReporting" value="true"></property>
         </jdbcConnection>
-
 
         <javaTypeResolver >
             <property name="forceBigDecimals" value="false" />
