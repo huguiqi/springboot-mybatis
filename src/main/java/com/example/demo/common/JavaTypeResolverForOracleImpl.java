@@ -68,4 +68,19 @@ public class JavaTypeResolverForOracleImpl extends JavaTypeResolverDefaultImpl{
 
                 return answer;
         }
+
+
+        @Override
+        public String calculateJdbcTypeName(IntrospectedColumn introspectedColumn) {
+
+                String answer = null;
+                JavaTypeResolverDefaultImpl.JdbcTypeInformation jdbcTypeInformation = (JavaTypeResolverDefaultImpl.JdbcTypeInformation)this.typeMap.get(Integer.valueOf(introspectedColumn.getJdbcType()));
+                if(jdbcTypeInformation != null) {
+                        if (introspectedColumn.getScale()>0)
+                                answer = "DECIMAL";
+                         else
+                                answer = jdbcTypeInformation.getJdbcTypeName();
+                }
+                return answer;
+        }
 }
